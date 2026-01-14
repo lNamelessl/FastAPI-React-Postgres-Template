@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     # security
     ALGORITHM: str
     SECRET_KEY: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+
+    # APP 
+    API_V1_STR: str 
 
     @computed_field  # type: ignore[prop-decorator]
     @property

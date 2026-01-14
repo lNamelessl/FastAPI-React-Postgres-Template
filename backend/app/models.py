@@ -82,6 +82,12 @@ class Item(ItemBase, table=True):
     )
     owner: User | None = Relationship(back_populates="items")
 
+class ItemsPublic(ItemBase):
+    """  
+    items list validation model
+    """
+    data: list(ItemBase)
+    count: int
 
 class Token(SQLModel):
     access_token: str
