@@ -1,14 +1,24 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-from .api.deps import get_query_token, get_token_header
-from .routers import items, users
+from app.api import main
+from app.core.config import settings
 
-app = FastAPI()
+app = FastAPI(
+    title=settings.PROJECT_NAME, openapi_url=f"{settings.API_V1_STR}/openapi.json"
+)
 
 
-#  will create the path operations on startup and won't affect performance
-@app.include_router(users.router)
+app.add_middleware(
+    CORSMiddleware,
+    allow_orgins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
+
+@app.include_router(main.router)
 @app.get("/")
 async def root():
     return {"message": "Hello Bigger Applications"}

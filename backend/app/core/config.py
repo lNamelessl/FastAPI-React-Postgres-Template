@@ -1,5 +1,5 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import PostgresDsn
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -18,8 +18,9 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
-    # APP 
-    API_V1_STR: str 
+    # APP
+    API_V1_STR: str
+    PROJECT_NAME: str
 
     @computed_field  # type: ignore[prop-decorator]
     @property
