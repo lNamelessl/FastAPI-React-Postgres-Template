@@ -3,7 +3,7 @@ from typing import Any
 from sqlmodel import Session, select
 
 from app.core.security import get_password_hash, verify_password
-from app.models import User, ItemCreate, User, UserCreate, UserUpdate, Item
+from app.models import User, ItemCreate, UserCreate, UserUpdate, Item
 
 
 def create_user(*, session: Session, user_create: UserCreate) -> User:

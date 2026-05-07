@@ -1,30 +1,38 @@
-from fastapi import APIRouter
-from app.models import UsersPublic, User, UserCreate
-from app.api.deps import SessionDep
 from typing import Any
-from sqlmodel import select, func
+
+from fastapi import APIRouter, HTTPException, status
+from sqlmodel import col, func, select
+
 from app import crud
+from app.api.deps import CurrentUser, SessionDep
+from app.models import User, UserCreate, UserPublic, UsersPublic
 
 # works in the same way as FastAPI
-router = APIRouter()
+router = APIRouter(prefix="/users", tags=["users"])
 
 
-@router.get("/", tags=["users"], response_model=UsersPublic)
-def read_users(session: SessionDep, skip: int = 0, limit: int = 100) -> Any:
+@router.get("/", response_model=UsersPublic)
+def read_users(
+    session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
+) -> Any:
     """
     Retrieve users
     """
+    if not current_user.is_super_user:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Admin access required"
+        )
 
     count_stmt = select(func.count()).select_from(User)
     count = session.exec(count_stmt).one()
 
-    stmt = select(User).offset(skip).limit(limit)
+    stmt = select(User).order_by(col(User.created_at).desc()).offset(skip).limit(limit)
     users = session.exec(stmt).all()
 
     return UsersPublic(data=users, count=count)
 
 
-@router.post("/", response_model=UsersPublic)
+@router.post("/", response_model=UserPublic)
 def create_user(*, session: SessionDep, user_in: UserCreate) -> Any:
     """
     Create new user
