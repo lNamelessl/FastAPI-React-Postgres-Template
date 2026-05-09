@@ -37,6 +37,9 @@ def create_user(*, session: SessionDep, user_in: UserCreate) -> Any:
     """
     Create new user
     """
+    if crud.get_user_by_email(email=user_in.email, session=session):
+        raise HTTPException(status_code=400)
+
     user = crud.create_user(session=session, user_create=user_in)
 
     return user
