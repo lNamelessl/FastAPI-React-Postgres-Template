@@ -14,7 +14,10 @@ def read_items(
     session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
 ) -> Any:
     """
-    Retrieve items
+    Retrieve current user's items.
+    
+    Returns a paginated list of items owned by the authenticated user.
+    Use skip and limit parameters for pagination.
     """
 
     count_stmt = (
@@ -34,7 +37,10 @@ def create_item(
     *, session: SessionDep, current_user: CurrentUser, item_in: ItemCreate
 ) -> Any:
     """
-    Create new item
+    Create a new item.
+    
+    Creates a new item associated with the authenticated user.
+    The item title is required and must be 1-255 characters.
     """
     item = Item.model_validate(item_in, update={"owner_id": current_user.id})
     session.add(item)

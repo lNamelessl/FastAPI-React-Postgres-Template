@@ -1,7 +1,7 @@
-# Use a slightly more robust base than alpine if you face build issues
-FROM python:3.11-slim
+# Use Python 3.12
+FROM python:3.12-slim
 
-# Install system dependencies (curl for uv, build-base for any C-extensions)
+# Install system dependencies (curl for uv, build dependencies for any C-extensions)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \

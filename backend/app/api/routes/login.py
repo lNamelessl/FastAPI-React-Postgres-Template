@@ -17,8 +17,13 @@ router = APIRouter(tags=["login"])
 def login_access_token(
     session: SessionDep, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Token:
-    """ "
-    login endpoint to get an access token
+    """
+    Login and receive JWT access token.
+    
+    Authenticate with email and password to receive a JWT access token.
+    Use the token in the Authorization header for subsequent requests.
+    
+    The token expires after the configured ACCESS_TOKEN_EXPIRE_MINUTES.
     """
     user = crud.authenticate(
         session=session, email=form_data.username, password=form_data.password

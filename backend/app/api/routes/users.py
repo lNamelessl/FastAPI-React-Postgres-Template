@@ -16,7 +16,9 @@ def read_users(
     session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
 ) -> Any:
     """
-    Retrieve users
+    Retrieve all users (admin only).
+    
+    Requires admin privileges to list all users in the system.
     """
     if not current_user.is_super_user:
         raise HTTPException(
@@ -35,10 +37,13 @@ def read_users(
 @router.post("/", response_model=UserPublic)
 def create_user(*, session: SessionDep, user_in: UserCreate) -> Any:
     """
-    Create new user
+    Create a new user account (public endpoint).
+    
+    This endpoint allows anyone to create a new user account with an email and password.
+    Email must be unique and password must be 8-72 characters.
     """
     if crud.get_user_by_email(email=user_in.email, session=session):
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400, detail="Email already registered")
 
     user = crud.create_user(session=session, user_create=user_in)
 

@@ -7,20 +7,27 @@ class Settings(BaseSettings):
         env_file="../.env", env_ignore_empty=True, extra="ignore"
     )
 
+    # Database
     POSTGRES_SERVER: str
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str = ""
     POSTGRES_DB: str = ""
 
-    # security
+    # Security
     ALGORITHM: str
     SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
-    # APP
+    # API
     API_V1_STR: str
     PROJECT_NAME: str
+    
+    # CORS
+    ALLOWED_ORIGINS: str = "*"
+    
+    # Debug
+    DEBUG: bool = False
 
     @computed_field  # type: ignore[prop-decorator]
     @property
