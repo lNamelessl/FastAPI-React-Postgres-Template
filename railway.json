@@ -1,0 +1,61 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "metadata": {
+    "name": "FastAPI + React + PostgreSQL",
+    "description": "A full-stack web application template with FastAPI backend, React frontend, and PostgreSQL database. Production-ready with authentication, JWT tokens, and auto-documentation.",
+    "tags": ["fastapi", "react", "postgresql", "python", "typescript", "full-stack"],
+    "detectedService": false,
+    "railwayConfig": [
+      {
+        "name": "backend",
+        "builder": "dockerfile",
+        "dockerfile": "./backend/Dockerfile",
+        "startCommand": "uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+      },
+      {
+        "name": "frontend",
+        "builder": "dockerfile",
+        "dockerfile": "./frontend/Dockerfile",
+        "startCommand": "nginx -g 'daemon off;'"
+      },
+      {
+        "name": "postgres",
+        "builder": "postgresql"
+      }
+    ]
+  },
+  "deploy": {
+    "restartPolicyType": "on_failure",
+    "restartPolicyMaxRetries": 5
+  },
+  "services": {
+    "backend": {
+      "buildCommand": "uv sync --frozen",
+      "startCommand": "uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT",
+      "variables": {
+        "POSTGRES_SERVER": "${{ Databases.postgres.PGHOST }}",
+        "POSTGRES_PORT": "${{ Databases.postgres.PGPORT }}",
+        "POSTGRES_USER": "${{ Databases.postgres.PGUSER }}",
+        "POSTGRES_PASSWORD": "${{ Databases.postgres.PGPASSWORD }}",
+        "POSTGRES_DB": "${{ Databases.postgres.PGDATABASE }}",
+        "API_V1_STR": "/api/v1",
+        "ALGORITHM": "HS256",
+        "ACCESS_TOKEN_EXPIRE_MINUTES": "60",
+        "DEBUG": "false"
+      },
+      "privateEnvironmentVariables": {
+        "SECRET_KEY": ""
+      }
+    },
+    "frontend": {
+      "buildCommand": "npm install && npm run build",
+      "startCommand": "nginx -g 'daemon off;'",
+      "variables": {
+        "VITE_API_URL": "${{ Services.backend.RAILWAY_PUBLIC_DOMAIN }}"
+      }
+    },
+    "postgres": {
+      "builder": "postgresql"
+    }
+  }
+}

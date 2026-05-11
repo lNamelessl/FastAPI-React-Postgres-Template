@@ -204,7 +204,7 @@ npm run lint
 - TypeScript 5+ - Type safety
 - Vite 4+ - Build tool
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com?referralCode=uBTGZq)
+[[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com?referralCode=uBTGZq)](https://railway.com/deploy/bmEgCZ?referralCode=uBTGZq&utm_medium=integration&utm_source=template&utm_campaign=generic)
 
 ## 🤝 Contributing
 
