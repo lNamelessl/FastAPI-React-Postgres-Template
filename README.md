@@ -204,6 +204,8 @@ npm run lint
 - TypeScript 5+ - Type safety
 - Vite 4+ - Build tool
 
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com?referralCode=uBTGZq)
+
 ## 🤝 Contributing
 
 1. Create a feature branch: `git checkout -b feature/my-feature`
