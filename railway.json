@@ -24,6 +24,9 @@
       }
     ]
   },
+  "build": {
+    "dockerfilePath": "backend/Dockerfile"
+  },
   "deploy": {
     "restartPolicyType": "on_failure",
     "restartPolicyMaxRetries": 5
