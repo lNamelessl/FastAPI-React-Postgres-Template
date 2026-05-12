@@ -9,13 +9,13 @@
       {
         "name": "backend",
         "builder": "dockerfile",
-        "dockerfile": "./backend/Dockerfile",
+        "dockerfile": "root/backend/Dockerfile",
         "startCommand": "uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT"
       },
       {
         "name": "frontend",
         "builder": "dockerfile",
-        "dockerfile": "./frontend/Dockerfile",
+        "dockerfile": "root/frontend/Dockerfile",
         "startCommand": "nginx -g 'daemon off;'"
       },
       {
