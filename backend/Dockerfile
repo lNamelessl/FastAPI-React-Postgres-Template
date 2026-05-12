@@ -15,7 +15,7 @@ COPY pyproject.toml uv.lock ./
 
 RUN uv sync --frozen
 
-COPY backend . .
+COPY backend/ ./
 
 EXPOSE 8000
 
