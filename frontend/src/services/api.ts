@@ -3,7 +3,7 @@ import { SignupResponse } from '../types/forms';
 
 
 // To this:
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL;
 const API_V1 = `${API_URL}`;
 
 class ApiService {
