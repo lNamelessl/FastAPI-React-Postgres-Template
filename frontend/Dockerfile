@@ -1,21 +1,35 @@
+# Multi-stage build for frontend production
 FROM node:18-alpine AS builder
+
 WORKDIR /app
 
-# 1. Copy dependency files
+# Copy package files
 COPY package.json package-lock.json ./
+
+# Install dependencies
 RUN npm ci
 
-# 2. Copy EVERYTHING else (including tsconfig.json, vite.config.ts, etc.)
-# This ensures tsc sees the config file it's looking for
-COPY . .
+# Copy source code
+COPY src ./src
+COPY public ./public
+COPY index.html ./
+COPY vite.config.ts ./
+COPY tsconfig.json ./
 
-# 3. Build
+# Build for production
 RUN npm run build
 
-# 4. Production stage
+# Production stage - serve with Nginx
 FROM nginx:alpine
+
+# Copy built assets from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy nginx configuration
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+# Expose port (Railway will use $PORT)
+EXPOSE 3000
+
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
