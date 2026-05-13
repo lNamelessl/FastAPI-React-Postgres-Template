@@ -14,7 +14,6 @@ COPY src ./src
 COPY public ./public
 COPY index.html ./
 COPY vite.config.ts ./
-COPY tsconfig.json ./
 
 # Build for production
 RUN npm run build
