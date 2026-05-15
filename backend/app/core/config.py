@@ -1,10 +1,14 @@
+from pathlib import Path
+
 from pydantic import PostgresDsn, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file="../.env", env_ignore_empty=True, extra="ignore"
+        env_file=str(Path(__file__).parent.parent.parent / ".env"),
+        env_ignore_empty=True,
+        extra="ignore",
     )
 
     # Database
@@ -22,10 +26,10 @@ class Settings(BaseSettings):
     # API
     API_V1_STR: str
     PROJECT_NAME: str
-    
+
     # CORS
     ALLOWED_ORIGINS: str = "*"
-    
+
     # Debug
     DEBUG: bool = False
 
